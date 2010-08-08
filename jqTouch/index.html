@@ -1,0 +1,87 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="viewport" content="width=device-width"/>
+<title>title</title>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript"> google.load("jquery", "1"); </script>
+<script src="lib/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
+<style type="text/css" media="screen">@import "lib/jqtouch/jqtouch.min.css";</style>
+<style type="text/css" media="screen">@import "lib/themes/apple/theme.min.css";</style>
+<script src="../extendscroll.js"></script>
+<script> 
+$.jQTouch({
+}); 
+</script>
+<script>
+$(document).ready(function() {
+  $("body").extendScroll({
+    onInitialize:function() {
+      content.extendContentList(100);
+    },
+    onExtend:function() {
+      content.extendContentList(50);
+    }
+  });
+});
+
+var content = {
+  current:0,
+  makeRow:function(i) {
+    var html = i;
+    return html;
+  },
+  extendContentList:function(num) {
+    var start = this.current;
+    var end = start + num;
+    this.current = end+1;
+    $this = this;
+    for (var i=start;i<end;i++) {
+      var row = $("<a href='#content'>")
+                  .append( content.makeRow(i) )
+                  .bind("click",function(e) {
+                       alert(event.target.innerText);
+//                     if (event.changedTouches[0]) {
+//                       alert(event.changedTouches[0].target.innerText);
+//                     }
+////                     $this.loadContent($(e.currentTarget));
+
+                   });
+      var li = $("<li class='arrow'>").append(row);
+      $("#home").append(li);
+    }
+  },
+  loadContent:function(elm) {
+    alert(elm.text());
+    var html = $("<div>").text(elm.text());
+    $("#body").html(html);
+  }
+}
+</script>
+
+<body>
+
+<div>
+  <div class="toolbar">
+    <h1>list</h1>
+    <a class="button flip" id="infoButton" href="#about">About</a>
+  </div>
+  
+  <h1>通常のリスト</h1>
+  <ul id="home">
+    <li class="arrow slidein"><a href="#content">demo</a>
+  </ul>
+</div>
+
+<div id="content">
+  <div class="toolbar">
+    <a class="back goback" href="#">Back</a>
+    <h1>contetn</h1>
+  </div>
+  <div id="body">
+  b
+  </div>
+</div>
+
+</body>
+
+

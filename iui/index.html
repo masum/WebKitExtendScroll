@@ -1,0 +1,58 @@
+<!-- http://developer.apple.com/mac/library/documentation/AppleApplications/Reference/WebKitDOMRef/index.html -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="viewport" content="width=device-width"/>
+<link rel="stylesheet" href="iui/iui.css" type="text/css"/>
+<script src="iui/iui.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("jquery", "1");</script>
+<script src="../extendscroll.js"></script>
+<title>title</title>
+<script>
+$(document).ready(function() {
+  $("body").extendScroll({
+    onInitialize:function() {
+      content.extendContentList(100);
+    },
+    onExtend:function() {
+      content.extendContentList(50);
+    }
+  });
+});
+
+var content = {
+  current:0,
+  makeRow:function(i) {
+    var html = $("<div>").append(i);
+    return html;
+  },
+  extendContentList:function(num) {
+    var start = this.current;
+    var end = start + num;
+    this.current = end+1;
+    $this = this;
+    for (var i=start;i<end;i++) {
+      var row = $("<a href='#content'>")
+                  .append( content.makeRow(i) )
+                  .bind("click",function(e) {
+                     $this.loadContent($(e.currentTarget));
+                   });
+      $("#home").append($("<li>").append(row));
+    }
+  },
+  loadContent:function(elm) {
+    var html = $("<div>").text(elm.text());
+    $("#content").html(html);
+  }
+}
+
+</script>
+<body>
+<div class="toolbar">
+  <h1 id="pageTitle"></h1>
+  <a id="backButton" class="button" href="#"></a>
+</div>
+<ul id="home" title="一覧" selected="true"></ul>
+<div id="content" title="記事"></div>
+</body>
+
